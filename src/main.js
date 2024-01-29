@@ -1,7 +1,7 @@
 
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
-
+import axios from 'axios';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
@@ -13,6 +13,14 @@ const form = document.querySelector('.search-form');
 const input= document.querySelector('.search-input');
 const startBtn= document.querySelector('.start-btn');
 const loader = document.querySelector('.loader');
+const loadMoreBtn = document.querySelector('.load-btn');
+
+const hiddenClass=  "is-hidden";
+let inputValue = "";
+let page = 1;
+
+// const axios = require('axios').default;
+
 
 loader.style.display = 'none';
 form.addEventListener('submit', handleSearch)
@@ -20,7 +28,7 @@ form.addEventListener('submit', handleSearch)
 function handleSearch(event){
   event.preventDefault();
   loader.style.display = 'block';
-  const inputValue = event.target.elements.query.value;
+  inputValue = event.target.elements.query.value;
   fetchImage(inputValue)
   .then(data => {
     loader.style.display = 'none';
@@ -32,31 +40,59 @@ function handleSearch(event){
             });
       } 
       container.innerHTML = "";
-      container.innerHTML = createMarkup(data.hits);
+      try {
+        container.innerHTML = createMarkup(data.hits);
       const refreshPage = new SimpleLightbox('.gallery a', {
           captionsData: 'alt',
           captionDelay: 250,
         });
         refreshPage.refresh();
-        form.reset();
+        // ------------кнопка ще
+        if(data.totalHits > 0){
+          loadMoreBtn.classList.remove(hiddenClass);
+          loadMoreBtn.addEventListener("click", handleLoadMore);
+      }else{
+          loadMoreBtn.classList.add(hiddenClass);
+          
+      
+      
+      }
+
+
+      } catch (error) {
+        onFetchError(error);
+      }finally {
+        form.reset()
+      }
+        
         
       })
-  .catch(onFetchError)
-}
-
-
-function fetchImage(name){
   
-const url = `${BASE_URL}?key=${API_KEY}&q=${name}&image_type=photo&orientation=horizontal&safesearch=true&per_page=18`;
-
-    return fetch(url).then((resp)=> {
-        if(!resp.ok){
-            throw new Error(resp.statusText);
-        }
-        return resp.json();
-    })
-    
 }
+
+
+function fetchImage(name, page = 1){
+  return axios.get(`${BASE_URL}?key=${API_KEY}&q=${name}`,{
+  params : {
+apiKey: API_KEY,
+q: name,
+image_type: 'photo',
+orientation: 'horizontal',
+safesearch: true,
+page,
+per_page: 5,
+  }
+}).then(({data})=>data)};
+// const url = `${BASE_URL}?key=${API_KEY}&q=${name}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40`;
+
+//     return fetch(url).then((resp)=> {
+//         if(!resp.ok){
+//             throw new Error(resp.statusText);
+//         }
+//         return resp.json();
+//     })
+    
+
 
 function createMarkup(arr) {
   return arr
@@ -82,6 +118,16 @@ function createMarkup(arr) {
     )
     .join('');
     
+}
+
+async function handleLoadMore(){
+  page += 1;
+  try {
+    const {hits} = await fetchImage(name, page);
+    createMarkup(data.hits, container);
+} catch (error) {
+  onFetchError(error);
+}
 }
 
 function onFetchError(error){

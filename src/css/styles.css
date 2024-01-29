@@ -67,6 +67,34 @@ margin-bottom: 30px;
     background-color: #df2caf;
   }
   
+  .div-btn{
+    display: flex;
+    justify-content: center;
+  }
+
+  .load-btn{
+    width: 175px;
+    margin-top: 10px;
+    height: 40px;
+    border-radius: 8px;
+    background-color: #fe007f;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.64px;
+    padding: 0;
+    cursor: pointer;
+    
+  }
+  .load-btn:hover,
+  .load-btn:active {
+    background-color: #df2caf;
+  }
+
+  .is-hidden {
+    display: none;
+  }
   /* gallery */
   ul {
     list-style: none;
