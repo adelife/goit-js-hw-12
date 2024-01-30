@@ -127,9 +127,9 @@ async function handleLoadMore(){
   // preloader.classList.remove(hiddenClass);
 loadMoreBtn.disabled = true;
   try {
-    const {hits} = await fetchImage(inputValue, page);
+    const {hits, total} = await fetchImage(inputValue, page);
 
-    // let maxPage = Math.ceil(total / per_page);
+    maxPage = Math.ceil(total / per_page);
 
     container.insertAdjacentHTML('beforeend', createMarkup(hits));
 } catch (error) {
@@ -137,15 +137,15 @@ loadMoreBtn.disabled = true;
 }finally{
   // preloader.classList.add(hiddenClass);
   loadMoreBtn.disabled = false;
-  // if(page === maxPage){
-  //   loadMoreBtn.classList.add(hiddenClass);
-  // iziToast.error({
-  //   title: 'Error',
-  //   message:
-  //     "We're sorry, but you've reached the end of search results.",
-  // });
+  if(page === maxPage){
+    loadMoreBtn.classList.add(hiddenClass);
+  iziToast.error({
+    title: 'Error',
+    message:
+      "We're sorry, but you've reached the end of search results.",
+  });
   
-  // }
+  }
 }
 }
 
