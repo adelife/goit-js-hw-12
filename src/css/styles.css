@@ -95,6 +95,9 @@ margin-bottom: 30px;
   .is-hidden {
     display: none;
   }
+  .loader-load.is-hidden{
+    display: none;
+  }
   /* gallery */
   ul {
     list-style: none;
@@ -141,6 +144,37 @@ font-size: 12px;
 
   /* loader */
   .loader {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: block;
+    margin:15px auto;
+    position: relative;
+    color: #FFF;
+    box-sizing: border-box;
+    animation: animloader 2s linear infinite;
+  }
+  
+  @keyframes animloader {
+    0% {
+      box-shadow: 14px 0 0 -2px,  38px 0 0 -2px,  -14px 0 0 -2px,  -38px 0 0 -2px;
+    }
+    25% {
+      box-shadow: 14px 0 0 -2px,  38px 0 0 -2px,  -14px 0 0 -2px,  -38px 0 0 2px;
+    }
+    50% {
+      box-shadow: 14px 0 0 -2px,  38px 0 0 -2px,  -14px 0 0 2px,  -38px 0 0 -2px;
+    }
+    75% {
+      box-shadow: 14px 0 0 2px,  38px 0 0 -2px,  -14px 0 0 -2px,  -38px 0 0 -2px;
+    }
+    100% {
+      box-shadow: 14px 0 0 -2px,  38px 0 0 2px,  -14px 0 0 -2px,  -38px 0 0 -2px;
+    }
+  }
+
+  /* loader load */
+  .loader-load {
     width: 12px;
     height: 12px;
     border-radius: 50%;

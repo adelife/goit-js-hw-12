@@ -14,6 +14,7 @@ const input= document.querySelector('.search-input');
 const startBtn= document.querySelector('.start-btn');
 const loader = document.querySelector('.loader');
 const loadMoreBtn = document.querySelector('.load-btn');
+const preloader = document.querySelector('loader-load');
 
 const hiddenClass=  "is-hidden";
 let inputValue = "";
@@ -40,6 +41,7 @@ function handleSearch(event){
             });
       } 
       container.innerHTML = "";
+      page = 1;
       try {
         container.innerHTML = createMarkup(data.hits);
       const refreshPage = new SimpleLightbox('.gallery a', {
@@ -79,8 +81,8 @@ q: name,
 image_type: 'photo',
 orientation: 'horizontal',
 safesearch: true,
-page,
 per_page: 5,
+page,
   }
 }).then(({data})=>data)};
 // const url = `${BASE_URL}?key=${API_KEY}&q=${name}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40`;
@@ -122,11 +124,22 @@ function createMarkup(arr) {
 
 async function handleLoadMore(){
   page += 1;
+  // preloader.classList.remove(hiddenClass);
+loadMoreBtn.disabled = true;
   try {
-    const {hits} = await fetchImage(name, page);
-    createMarkup(data.hits, container);
+    const {hits, total} = await fetchImage(inputValue, page);
+
+    let maxPage = Math.ceil(total / per_page);
+
+    container.insertAdjacentHTML('beforeend', createMarkup(hits));
 } catch (error) {
   onFetchError(error);
+}finally{
+  // preloader.classList.add(hiddenClass);
+  loadMoreBtn.disabled = false;
+  if(page === maxPage){
+    loadMoreBtn.classList.add(hiddenClass);
+  }
 }
 }
 
