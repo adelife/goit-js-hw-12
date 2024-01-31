@@ -132,6 +132,11 @@ loadMoreBtn.disabled = true;
     
 
     container.insertAdjacentHTML('beforeend', createMarkup(hits));
+    const refreshPage = new SimpleLightbox('.gallery a', {
+      captionsData: 'alt',
+      captionDelay: 250,
+    });
+    refreshPage.refresh();
     scrollBy()
 } catch (error) {
   onFetchError(error);
