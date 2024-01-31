@@ -95,9 +95,10 @@ margin-bottom: 30px;
   .is-hidden {
     display: none;
   }
-  .loader-load.is-hidden{
+  .is-hidden-loader{
     display: none;
   }
+  
   /* gallery */
   ul {
     list-style: none;
@@ -174,7 +175,7 @@ font-size: 12px;
   }
 
   /* loader load */
-  .loader-load {
+  .loader-load{
     width: 12px;
     height: 12px;
     border-radius: 50%;

@@ -19,6 +19,7 @@ const preloader = document.querySelector('loader-load');
 const hiddenClass=  "is-hidden";
 let inputValue = "";
 let page = 1;
+let maxPage = 0;
 
 // const axios = require('axios').default;
 
@@ -43,23 +44,21 @@ function handleSearch(event){
       container.innerHTML = "";
       page = 1;
       try {
+       
         container.innerHTML = createMarkup(data.hits);
       const refreshPage = new SimpleLightbox('.gallery a', {
           captionsData: 'alt',
           captionDelay: 250,
         });
         refreshPage.refresh();
+        scrollBy();
         // ------------кнопка ще
         if(data.totalHits > 0){
           loadMoreBtn.classList.remove(hiddenClass);
           loadMoreBtn.addEventListener("click", handleLoadMore);
       }else{
           loadMoreBtn.classList.add(hiddenClass);
-          
-      
-      
       }
-
 
       } catch (error) {
         onFetchError(error);
@@ -124,21 +123,24 @@ function createMarkup(arr) {
 
 async function handleLoadMore(){
   page += 1;
-  // preloader.classList.remove(hiddenClass);
+ 
 loadMoreBtn.disabled = true;
   try {
     const {hits, total} = await fetchImage(inputValue, page);
 
-    maxPage = Math.ceil(total / per_page);
+    maxPage = Math.ceil(total / 40);
+    
 
     container.insertAdjacentHTML('beforeend', createMarkup(hits));
+    scrollBy()
 } catch (error) {
   onFetchError(error);
 }finally{
-  // preloader.classList.add(hiddenClass);
+  
   loadMoreBtn.disabled = false;
   if(page === maxPage){
     loadMoreBtn.classList.add(hiddenClass);
+    loadMoreBtn.removeEventListener("click", handleLoadMore)
   iziToast.error({
     title: 'Error',
     message:
@@ -156,4 +158,10 @@ function onFetchError(error){
       'OOps... Plese try again',
   });
 }
-    
+
+function scrollBy() {
+  window.scrollBy({
+    top: 700,
+    behavior: 'smooth',
+  });
+}
