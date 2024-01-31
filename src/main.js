@@ -80,7 +80,7 @@ q: name,
 image_type: 'photo',
 orientation: 'horizontal',
 safesearch: true,
-per_page: 5,
+per_page: 40,
 page,
   }
 }).then(({data})=>data)};
