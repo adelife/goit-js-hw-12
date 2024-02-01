@@ -21,6 +21,12 @@ let inputValue = "";
 let page = 1;
 let maxPage = 0;
 
+
+const refreshPage = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
 // const axios = require('axios').default;
 
 
@@ -46,10 +52,10 @@ function handleSearch(event){
       try {
        
         container.innerHTML = createMarkup(data.hits);
-      const refreshPage = new SimpleLightbox('.gallery a', {
-          captionsData: 'alt',
-          captionDelay: 250,
-        });
+      // const refreshPage = new SimpleLightbox('.gallery a', {
+      //     captionsData: 'alt',
+      //     captionDelay: 250,
+      //   });
         refreshPage.refresh();
         scrollBy();
         // ------------кнопка ще
@@ -63,7 +69,16 @@ function handleSearch(event){
       } catch (error) {
         onFetchError(error);
       }finally {
-        form.reset()
+        form.reset();
+        if(page === maxPage){
+          loadMoreBtn.classList.add(hiddenClass);
+        iziToast.error({
+          title: 'Error',
+          message:
+            "We're sorry, but you've reached the end of search results.",
+        });
+        
+        }
       }
         
         
@@ -130,12 +145,12 @@ loadMoreBtn.disabled = true;
 
     maxPage = Math.ceil(total / 40);
     
-
+    
     container.insertAdjacentHTML('beforeend', createMarkup(hits));
-    const refreshPage = new SimpleLightbox('.gallery a', {
-      captionsData: 'alt',
-      captionDelay: 250,
-    });
+    // const refreshPage = new SimpleLightbox('.gallery a', {
+    //   captionsData: 'alt',
+    //   captionDelay: 250,
+    // });
     refreshPage.refresh();
     scrollBy()
 } catch (error) {
