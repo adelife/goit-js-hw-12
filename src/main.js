@@ -46,11 +46,13 @@ function handleSearch(event){
               message:
                 'Sorry, there are no images matching your search query. Please try again!',
             });
+    //  if(data.totalHits <= page){
+    //           loadMoreBtn.classList.add(hiddenClass)};
       } 
       container.innerHTML = "";
       page = 1;
       try {
-       
+        
         container.innerHTML = createMarkup(data.hits);
       // const refreshPage = new SimpleLightbox('.gallery a', {
       //     captionsData: 'alt',
@@ -59,7 +61,7 @@ function handleSearch(event){
         refreshPage.refresh();
         scrollBy();
         // ------------кнопка ще
-        if(data.totalHits > 0){
+        if(data.totalHits > 40){
           loadMoreBtn.classList.remove(hiddenClass);
           loadMoreBtn.addEventListener("click", handleLoadMore);
       }else{
