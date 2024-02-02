@@ -61,7 +61,7 @@ function handleSearch(event){
         refreshPage.refresh();
         scrollBy();
         // ------------кнопка ще
-        if(data.totalHits > 40){
+        if(data.totalHits >= 40){
           loadMoreBtn.classList.remove(hiddenClass);
           loadMoreBtn.addEventListener("click", handleLoadMore);
       }else{
